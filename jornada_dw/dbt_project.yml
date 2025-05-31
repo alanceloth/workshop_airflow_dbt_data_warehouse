@@ -1,0 +1,29 @@
+name: 'jornada_dw'
+version: '1.0.0'
+
+profile: 'jornada_dw'
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+vars:
+    "dbt_date:time_zone": "America/Sao_Paulo"
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  jornada_dw:
+    staging:
+      +materialized: view
+    
+    intermediate:
+      +materialized: table
+    
+    mart:
+      +materialized: table

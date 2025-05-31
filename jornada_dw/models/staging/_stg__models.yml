@@ -1,0 +1,83 @@
+version: 2
+
+models:
+  - name: stg_cadastros
+    description: "Modelo staging para a tabela de cadastros de clientes. Contém dados limpos e padronizados dos clientes."
+    columns:
+      - name: id_cliente
+        description: "ID único do cliente"
+        tests:
+          - unique
+          - not_null
+      - name: cpf
+        description: "CPF do cliente (apenas números)"
+        tests:
+          - not_null
+      - name: nome
+        description: "Nome completo do cliente"
+      - name: dt_nascimento
+        description: "Data de nascimento do cliente"
+      - name: genero
+        description: "Gênero do cliente (M/F)"
+      - name: email
+        description: "E-mail do cliente"
+      - name: telefone
+        description: "Telefone de contato do cliente"
+      - name: cep
+        description: "CEP do endereço do cliente"
+      - name: cidade
+        description: "Cidade do cliente"
+      - name: estado
+        description: "Estado (UF) do cliente"
+      - name: pais
+        description: "País do cliente"
+      - name: dt_cadastro
+        description: "Data de cadastro do cliente no sistema"
+      - name: etl_inserted_at
+        description: "Timestamp de quando o dado foi carregado no modelo"
+
+  - name: stg_pedidos
+    description: "Modelo staging para a tabela de pedidos. Contém dados limpos e transformações iniciais dos pedidos."
+    columns:
+      - name: id_pedido
+        description: "ID único do pedido"
+        tests:
+          - unique
+          - not_null
+      - name: cpf
+        description: "CPF do cliente que fez o pedido"
+        tests:
+          - not_null
+      - name: valor_pedido
+        description: "Valor dos itens do pedido (sem frete e desconto)"
+      - name: valor_frete
+        description: "Valor do frete do pedido"
+      - name: valor_desconto
+        description: "Valor de desconto aplicado ao pedido"
+      - name: valor_total_pedido
+        description: "Valor total do pedido (itens + frete - desconto)"
+      - name: cupom
+        description: "Código do cupom utilizado (se houver)"
+      - name: tem_cupom
+        description: "Indica se o pedido teve cupom aplicado"
+      - name: endereco_entrega_logradouro
+        description: "Logradouro do endereço de entrega"
+      - name: endereco_entrega_numero
+        description: "Número do endereço de entrega"
+      - name: endereco_entrega_bairro
+        description: "Bairro do endereço de entrega"
+      - name: endereco_entrega_cidade
+        description: "Cidade do endereço de entrega"
+      - name: endereco_entrega_estado
+        description: "Estado (UF) do endereço de entrega"
+      - name: endereco_entrega_pais
+        description: "País do endereço de entrega"
+      - name: status_pedido
+        description: "Status atual do pedido"
+      - name: dt_pedido
+        description: "Data em que o pedido foi realizado"
+        tests:
+          - not_null
+      - name: etl_inserted_at
+        description: "Timestamp de quando o dado foi carregado no modelo"
+      
