@@ -1,0 +1,132 @@
+version: 2
+
+models:
+  # Métricas de Clientes (marts)
+  - name: mart_metricas_clientes
+    description: "Métricas e segmentação de clientes com análise RFM"
+    config:
+      materialized: table
+      unique_key: sk_cliente
+    columns:
+      - name: sk_cliente
+        description: "Chave substituta do cliente"
+        tests:
+          - not_null
+          - unique
+      - name: cpf
+        description: "CPF do cliente"
+      - name: nome
+        description: "Nome completo do cliente"
+      - name: estado
+        description: "Estado de residência do cliente"
+      - name: cidade
+        description: "Cidade de residência do cliente"
+      - name: total_pedidos
+        description: "Número total de pedidos do cliente"
+      - name: valor_total_gasto
+        description: "Valor total gasto pelo cliente"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1000000
+              strictly: false
+      - name: ticket_medio
+        description: "Valor médio dos pedidos do cliente"
+      - name: data_primeiro_pedido
+        description: "Data do primeiro pedido do cliente"
+      - name: data_ultimo_pedido
+        description: "Data do último pedido do cliente"
+      - name: primeiro_ano_compra
+        description: "Ano da primeira compra do cliente"
+      - name: ultimo_ano_compra
+        description: "Ano da última compra do cliente"
+      - name: total_anos_ativos
+        description: "Número de anos em que o cliente realizou compras"
+      - name: pedidos_verao
+        description: "Número de pedidos no verão"
+      - name: pedidos_outono
+        description: "Número de pedidos no outono"
+      - name: pedidos_inverno
+        description: "Número de pedidos no inverno"
+      - name: pedidos_primavera
+        description: "Número de pedidos na primavera"
+      - name: pedidos_domingo
+        description: "Número de pedidos aos domingos"
+      - name: pedidos_segunda
+        description: "Número de pedidos às segundas-feiras"
+      - name: pedidos_terca
+        description: "Número de pedidos às terças-feiras"
+      - name: pedidos_quarta
+        description: "Número de pedidos às quartas-feiras"
+      - name: pedidos_quinta
+        description: "Número de pedidos às quintas-feiras"
+      - name: pedidos_sexta
+        description: "Número de pedidos às sextas-feiras"
+      - name: pedidos_sabado
+        description: "Número de pedidos aos sábados"
+      - name: dias_desde_ultimo_pedido
+        description: "Dias desde o último pedido do cliente"
+      - name: frequencia_media_dias
+        description: "Frequência média de compras em dias"
+      - name: valor_medio_por_mes
+        description: "Valor médio gasto por mês"
+      - name: frequencia_media_mensal
+        description: "Frequência média de compras por mês"
+      - name: segmento_rfm
+        description: "Segmento RFM do cliente (Campeão, Cliente Fiel, Potencial, Em Risco de Churn, Em Observação, Inativo)"
+      - name: score_valor
+        description: "Score de valor (1-5) para o cliente"
+      - name: score_recencia
+        description: "Score de recência (1-5) para o cliente"
+      - name: score_frequencia
+        description: "Score de frequência (1-5) para o cliente"
+
+  # Vendas por Período (marts)
+  - name: mart_vendas_por_periodo
+    description: "Agregação de vendas por dia com métricas temporais e análises de tendência"
+    config:
+      materialized: table
+      unique_key: date_day
+    columns:
+      - name: date_day
+        description: "Data de referência (YYYY-MM-DD)"
+        tests:
+          - not_null
+          - unique
+      - name: dia_da_semana
+        description: "Nome do dia da semana"
+      - name: mes
+        description: "Nome do mês"
+      - name: trimestre
+        description: "Número do trimestre (1-4)"
+      - name: ano
+        description: "Ano da data de referência"
+      - name: total_pedidos
+        description: "Número total de pedidos no dia"
+      - name: clientes_unicos
+        description: "Número de clientes únicos que realizaram pedidos no dia"
+      - name: receita_bruta
+        description: "Receita bruta do dia"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1000000
+              strictly: false
+      - name: ticket_medio
+        description: "Valor médio dos pedidos do dia"
+      - name: receita_por_cliente
+        description: "Receita média por cliente no dia"
+      - name: receita_dia_anterior
+        description: "Receita bruta do dia anterior (para comparação)"
+      - name: pedidos_dia_anterior
+        description: "Número de pedidos do dia anterior (para comparação)"
+      - name: receita_media_7d
+        description: "Média móvel de receita dos últimos 7 dias"
+      - name: variacao_dia_anterior
+        description: "Variação da receita em relação ao dia anterior"
+      - name: taxa_crescimento_diaria
+        description: "Taxa de crescimento diária da receita (em %)"
+      - name: variacao_pedidos_dia_anterior
+        description: "Variação no número de pedidos em relação ao dia anterior"
+      - name: taxa_crescimento_pedidos_diaria
+        description: "Taxa de crescimento diária do número de pedidos (em %)"
