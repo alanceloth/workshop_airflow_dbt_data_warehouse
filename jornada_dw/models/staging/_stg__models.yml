@@ -81,3 +81,4 @@ models:
       - name: etl_inserted_at
         description: "Timestamp de quando o dado foi carregado no modelo"
       
+  - name: stg_cadastros_2
